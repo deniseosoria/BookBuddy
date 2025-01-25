@@ -10,49 +10,10 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Account from "./components/Account";
 
+
 function App() {
   const [token, setToken] = useState(null);
-  const [books, setBooks] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState(null);
-
-
-  const API_URL = `https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/books`;
-
-  async function fetchAllBooks() {
-    try {
-      const response = await fetch(API_URL);
-      const result = await response.json();
-      console.log(result)
-
-      setBooks(result.books);
-
-      
-
-      setIsLoading(false);
-    } catch (error) {
-      console.error("Error fetching books:", error);
-      setError("Failed to load books. Please try again later.");
-      setIsLoading(false);
-    }
-  }
-
-  useEffect(() => {
-    fetchAllBooks();
-  }, []);
-
-  if (isLoading) {
-    return <h2>Loading books...</h2>;
-  }
-
-  if (error) {
-    return (
-      <div>
-        <h2>Error</h2>
-        <p>{error}</p>
-      </div>
-    );
-  }
+  
 
   return (
     <>
@@ -68,31 +29,19 @@ function App() {
 
       <div>
         <Routes>
-          {/* Home Route: Search Bar and All Books */}
           <Route
             path="/"
             element={
               <>
                 <SearchBar />
-
-                <Books books={books} />
+                <Books />
               </>
             }
           />
-
-          {/* Searched Book Route */}
-          <Route path="/book/:name" element={<SearchedBooks />} />
-
-          {/* Single Book Route */}
+          <Route path="/book/search/:name" element={<SearchedBooks />} />
           <Route path="/book/:id" element={<SingleBook />} />
-
-          {/* Login Route */}
           <Route path="/login" element={<Login />} />
-
-          {/* Register Route */}
           <Route path="/register" element={<Register />} />
-
-          {/* Account Route */}
           <Route path="/account" element={<Account />} />
         </Routes>
       </div>
