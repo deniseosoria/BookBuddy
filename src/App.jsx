@@ -10,16 +10,25 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 import Account from "./components/Account";
 
-
 function App() {
-  const [token, setToken] = useState(null);
-  
+  const [token, setToken] = useState(() => localStorage.getItem("token"));
+
+   // Function to handle setting & persisting the token
+   const handleSetToken = (newToken) => {
+    if (newToken) {
+      setToken(newToken);
+      localStorage.setItem("token", newToken); // Store token in localStorage
+    } else {
+      setToken(null);
+      localStorage.removeItem("token"); // Remove token on logout
+    }
+  };
 
   return (
     <>
       <header>
         <h1>
-          <img id="logo-image" src={bookLogo} />
+          <img id="logo-image" src={bookLogo} alt="Library Logo" />
           Library App
         </h1>
         <nav>
@@ -39,10 +48,10 @@ function App() {
             }
           />
           <Route path="/book/search/:name" element={<SearchedBooks />} />
-          <Route path="/book/:id" element={<SingleBook />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/account" element={<Account />} />
+          <Route path="/book/:id" element={<SingleBook token={token}/>} />
+          <Route path="/users/login" element={<Login setToken={handleSetToken} token={token} />} />
+          <Route path="/users/register" element={<Register setToken={handleSetToken} token={token} />} />
+          <Route path="/users/account" element={token ? <Account token={token} /> : <p>Please register or log in.</p>} />
         </Routes>
       </div>
     </>

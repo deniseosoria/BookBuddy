@@ -8,6 +8,8 @@ const Books = () => {
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [filteredBooks, setFilteredBooks] = useState([]); // Books displayed in UI
+  const [showAvailableOnly, setShowAvailableOnly] = useState(false); // Controls filter
 
   useEffect(() => {
     async function getData() {
@@ -15,6 +17,9 @@ const Books = () => {
         const booksData = await getBooks();
         setBooks(booksData);
         setIsLoading(false);
+
+        // Initially show all books
+        setFilteredBooks(booksData);
       } catch (err) {
         console.error("Error fetching books:", err); // 
         setError("Failed to load books. Please try again later.");
@@ -42,14 +47,34 @@ const Books = () => {
     return <h2>No books found.</h2>;
   }
 
+  // Function to toggle between all books and available books
+  function toggleFilter() {
+    if (showAvailableOnly) {
+      setFilteredBooks(books); // Show all books
+    } else {
+      setFilteredBooks(books.filter((book) => book.available)); // Show only available books
+    }
+    setShowAvailableOnly(!showAvailableOnly);
+  }
+
   return (
     <div>
+      {/* Toggle Filter Button */}
+      <button onClick={toggleFilter}>
+        {showAvailableOnly ? "Show All Books" : "Show Available Books"}
+      </button>
       <h2>All Books</h2>
       <div className="grid-container">
-        {books.map((book) => (
-          <div className="grid-item" key={book.id}>
+
+         {/* Book List */}
+      {filteredBooks.length > 0 ? (
+        <ul>
+          {filteredBooks.map((book) => (
+      
+          <li className="grid-item" key={book.id}>
             <h3>{book.title}</h3>
             <h4>Author: {book.author}</h4>
+            {book.available ? <h3 style={{color: "blue"}} >Available</h3> : <h3 style={{color: "red"}}>Not Available</h3>}
             <img src={book.coverimage} alt={book.title} />
 
             <br />
@@ -60,8 +85,12 @@ const Books = () => {
             >
               More Details
             </Link>
-          </div>
+          </li>
         ))}
+        </ul>
+      ) : (
+        <p>No books available.</p>
+      )}
       </div>
     </div>
   );

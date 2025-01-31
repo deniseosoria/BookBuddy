@@ -1,14 +1,15 @@
 /* TODO - add your code to create a functional React component that renders details for a single book. Fetch the book data from the provided API. You may consider conditionally rendering a 'Checkout' button for logged in users. */
 import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
-import { getSingleBook } from "../api";
+import { getSingleBook, reserveBook } from "../api";
 
-const SingleBook = () => {
+const SingleBook = ({token}) => {
   const { id } = useParams(); // Get the book ID from the route;
   console.log("Book ID from params:", id); // Add this to check the value of `id`
   const [book, setBook] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   
   
   
@@ -31,6 +32,24 @@ const SingleBook = () => {
   
     getData();
   }, [id]);
+
+  async function handleReserve(bookId) {
+    if (!token) {
+      setError("You must be logged in to reserve a book.");
+      return;
+    }
+
+    setError(null);
+    setSuccess(null);
+
+    const result = await reserveBook(token, bookId);
+
+    if (result.error) {
+      setError(result.error);
+    } else {
+      setSuccess("Book reserved successfully!");
+    }
+  }
   
 
   if (isLoading) {
@@ -66,6 +85,10 @@ const SingleBook = () => {
       />
       <p>{book.description || "Unknown Description"}</p>
 
+
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      {success && <p style={{ color: "green" }}>{success}</p>}
+      <button onClick={() => handleReserve(book.id)}>Reserve</button>
       <Link to="/">Back to All Books</Link>
     </div>
   );
