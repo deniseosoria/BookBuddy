@@ -3,64 +3,52 @@ import React, { useEffect, useState } from "react";
 import { useParams, Link } from "react-router-dom";
 import { getSingleBook, reserveBook } from "../api";
 
-const SingleBook = ({token}) => {
-  const { id } = useParams(); // Get the book ID from the route;
-  console.log("Book ID from params:", id); // Add this to check the value of `id`
+const SingleBook = ({ token }) => {
+  const { id } = useParams();
   const [book, setBook] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  
-  
-  
 
   useEffect(() => {
-    async function getData() {
-      console.log("Fetching book with ID:", id); // Log the ID before the API call
-  
+    async function fetchBook() {
       try {
         const bookData = await getSingleBook(id);
-        console.log("Fetched book data:", bookData); // Log the fetched book data
         setBook(bookData);
-        setIsLoading(false);
-      } catch (error) {
-        console.error("Error fetching book data:", error);
-        setError("Failed to load book data.");
+
+      } catch (err) {
+        setError(err.message || "Failed to load book data.");
+
+      } finally {
         setIsLoading(false);
       }
     }
-  
-    getData();
+
+    fetchBook();
   }, [id]);
 
-  async function handleReserve(bookId) {
-    if (!token) {
-      setError("You must be logged in to reserve a book.");
-      return;
-    }
+  async function handleReserve() {
 
-    setError(null);
-    setSuccess(null);
-
-    const result = await reserveBook(token, bookId);
-
-    if (result.error) {
-      setError(result.error);
-    } else {
-      setSuccess("Book reserved successfully!");
+    try {
+      const result = await reserveBook(token, book.id);
+      if (result.error) {
+        setError(result.error);
+      } else {
+        setSuccess("Book reserved successfully!");
+      }
+    } catch (err) {
+      setError("Something went wrong. Please try again.");
     }
   }
-  
 
-  if (isLoading) {
-    return <h2>Loading books...</h2>;
-  }
+  if (isLoading) return <h2>Loading book details...</h2>;
 
   if (error) {
     return (
       <div>
         <h2>Error</h2>
         <p>{error}</p>
+        <Link to="/">Back to All Books</Link>
       </div>
     );
   }
@@ -75,21 +63,30 @@ const SingleBook = ({token}) => {
   }
 
   return (
-    <div>
+    <div className="single-book">
       <h1>{book.title || "Unknown Title"}</h1>
       <h3>{book.author || "Unknown Author"}</h3>
-      {book.available ? <h3 style={{color: "blue"}} >Available</h3> : <h3 style={{color: "red"}}>Not Available</h3>}
+      <h3 style={{ color: book.available ? "blue" : "red" }}>
+        {book.available ? "Available" : "Not Available"}
+      </h3>
       <img
         src={book.coverimage || "https://via.placeholder.com/200"}
-        alt={book.title || "Unknown"}
+        alt={book.title || "Book Cover"}
+        style={{ maxWidth: "200px", height: "auto" }}
       />
-      <p>{book.description || "Unknown Description"}</p>
+      <p>{book.description || "No description available."}</p>
 
+      {/* Success/Error Messages */}
+      {error && <p style={{ color: "red" }} aria-live="polite">{error}</p>}
+      {success && <p style={{ color: "green" }} aria-live="polite">{success}</p>}
 
-      {error && <p style={{ color: "red" }}>{error}</p>}
-      {success && <p style={{ color: "green" }}>{success}</p>}
-      <button onClick={() => handleReserve(book.id)}>Reserve</button>
-      <Link to="/">Back to All Books</Link>
+      {/* Conditionally render the Reserve button */}
+      {token && book.available && (
+        <button onClick={handleReserve}>Reserve</button>
+      )}
+
+      <br/>
+      <Link to="/"><button>Back to All Books</button></Link>
     </div>
   );
 };

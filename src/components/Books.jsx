@@ -8,31 +8,30 @@ const Books = () => {
   const [books, setBooks] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [filteredBooks, setFilteredBooks] = useState([]); // Books displayed in UI
-  const [showAvailableOnly, setShowAvailableOnly] = useState(false); // Controls filter
+  const [filteredBooks, setFilteredBooks] = useState([]);
+  const [showAvailableOnly, setShowAvailableOnly] = useState(false);
 
   useEffect(() => {
     async function getData() {
       try {
         const booksData = await getBooks();
+        if (!booksData || booksData.length === 0) {
+          throw new Error("No books found.");
+        }
         setBooks(booksData);
-        setIsLoading(false);
-
-        // Initially show all books
         setFilteredBooks(booksData);
       } catch (err) {
-        console.error("Error fetching books:", err); // 
-        setError("Failed to load books. Please try again later.");
+        console.error("Error fetching books:", err);
+        setError(err.message || "Failed to load books. Please try again later.");
+      } finally {
         setIsLoading(false);
       }
     }
 
     getData();
-  }, []); 
+  }, []);
 
-  if (isLoading) {
-    return <h2>Loading books...</h2>;
-  }
+  if (isLoading) return <h2>Loading books...</h2>;
 
   if (error) {
     return (
@@ -50,47 +49,50 @@ const Books = () => {
   // Function to toggle between all books and available books
   function toggleFilter() {
     if (showAvailableOnly) {
-      setFilteredBooks(books); // Show all books
+      setFilteredBooks(books);
     } else {
-      setFilteredBooks(books.filter((book) => book.available)); // Show only available books
+      setFilteredBooks(books.filter((book) => book.available));
     }
     setShowAvailableOnly(!showAvailableOnly);
   }
 
   return (
-    <div>
+    <div className="books">
       {/* Toggle Filter Button */}
-      <button onClick={toggleFilter}>
+      <button className="available-button" onClick={toggleFilter}>
         {showAvailableOnly ? "Show All Books" : "Show Available Books"}
       </button>
-      <h2>All Books</h2>
+
+      <h2>Library Catalog</h2>
       <div className="grid-container">
+        {/* Book List */}
+        {filteredBooks.length > 0 ? (
+          filteredBooks.map((book) => (
+            <div className="grid-item" key={book.id}>
+              <h3>{book.title || "Unknown Title"}</h3>
+              <h4>Author: {book.author || "Unknown Author"}</h4>
+              <h3 style={{ color: book.available ? "blue" : "red" }}>
+                {book.available ? "Available" : "Not Available"}
+              </h3>
 
-         {/* Book List */}
-      {filteredBooks.length > 0 ? (
-        <ul>
-          {filteredBooks.map((book) => (
-      
-          <li className="grid-item" key={book.id}>
-            <h3>{book.title}</h3>
-            <h4>Author: {book.author}</h4>
-            {book.available ? <h3 style={{color: "blue"}} >Available</h3> : <h3 style={{color: "red"}}>Not Available</h3>}
-            <img src={book.coverimage} alt={book.title} />
+              <img
+                src={book.coverimage || "https://via.placeholder.com/200"}
+                alt={book.title || "Book Cover"}
+                style={{ maxWidth: "150px", height: "auto" }}
+              />
 
-            <br />
-
-            <Link
-              to={`/book/${book.id}`}
-              onClick={() => console.log(`Navigating to book ID: ${book.id}`)}
-            >
-              More Details
-            </Link>
-          </li>
-        ))}
-        </ul>
-      ) : (
-        <p>No books available.</p>
-      )}
+              <br />
+              <Link
+                to={`/book/${book.id}`}
+                onClick={() => console.log(`Navigating to book ID: ${book.id}`)}
+              >
+                More Details
+              </Link>
+            </div>
+          ))
+        ) : (
+          <p>No books available.</p>
+        )}
       </div>
     </div>
   );

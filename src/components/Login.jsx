@@ -28,6 +28,7 @@ const Login = ({ setToken }) => {
         setLocalToken(loginData.token); // Store locally for the Link button
         localStorage.setItem("token", loginData.token); // Persist login
         navigate("/users/account"); // Auto-redirect to Account page
+        window.location.reload(); // Refresh page to update navigation
       } else {
         throw new Error("Account not found. Please register.");
       }

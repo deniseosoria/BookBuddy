@@ -26,10 +26,11 @@ function App() {
 
   return (
     <>
-      <header>
+    <div className="app">
+    <header>
         <h1>
           <img id="logo-image" src={bookLogo} alt="Library Logo" />
-          Library App
+          BookBuddy
         </h1>
         <nav>
           <Navigation />
@@ -54,6 +55,7 @@ function App() {
           <Route path="/users/account" element={token ? <Account token={token} /> : <p>Please register or log in.</p>} />
         </Routes>
       </div>
+    </div>
     </>
   );
 }

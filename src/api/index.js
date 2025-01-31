@@ -178,4 +178,27 @@ export async function reserveBook(token, bookId) {
   }
 }
 
+export async function returnBook(token, bookId) {
+  try {
+    const response = await fetch(`https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/reservations/${bookId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`, // Pass the token for authentication
+      },
+      body: JSON.stringify({available: true }), //the desired new available status for the book
+    });
 
+    const result = await response.json();
+
+    if (!response.ok) {
+      throw new Error(result.error || "Failed to return book.");
+    }
+
+    console.log("Book returned successfully:", result);
+    return result;
+  } catch (err) {
+    console.error("Error returning book:", err);
+    return { error: err.message };
+  }
+}
