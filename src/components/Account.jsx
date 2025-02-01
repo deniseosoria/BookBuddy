@@ -88,7 +88,7 @@ const Account = ({ token }) => {
           <div>
             <h3>Your Reserved Books:</h3>
             {reservedBooks.length > 0 ? (
-              <ul>
+              <ul className="reserved-books">
                 {reservedBooks.map((book) => (
                   <li key={book.id}>
                     <h4>

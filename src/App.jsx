@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from "react";
-import { Routes, Route } from "react-router-dom";
+import React, { useState } from "react";
+import { Routes, Route, Link } from "react-router-dom";
 import bookLogo from "./assets/books.png";
 import SearchBar from "./components/SearchBar";
 import SearchedBooks from "./components/SearchedBooks";
@@ -30,8 +30,10 @@ function App() {
     <div className="app">
     <header>
         <h1>
+          <Link to="/" className="h1">
           <img className="logo" id="logo-image" src={bookLogo} alt="Library Logo" />
           BookBuddy
+          </Link>
         </h1>
         <nav>
           <Navigation />

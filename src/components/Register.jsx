@@ -131,7 +131,7 @@ const Register = ({ setToken }) => {
               </label>
             </div>
           </div>
-
+          
           <button className="form-button" type="submit">
             Register
           </button>

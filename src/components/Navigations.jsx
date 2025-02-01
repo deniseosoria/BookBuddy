@@ -29,17 +29,17 @@ const Navigations = () => {
     <div className="nav">
       {/* Show "Home" link ONLY if the user is NOT on "/" */}
       {location.pathname !== "/" && (
-        <Link to="/" className="nav-link">Home</Link>
+        <Link to="/"><button className="nav-link">Home</button></Link>
       )}
 
       {!user ? (
-        <Link to="/users/login" className="nav-link">
-          Login
+        <Link to="/users/login">
+          <button className="nav-link">Login</button>
         </Link>
       ) : (
         <>
-          <Link to="/users/account" className="nav-link">
-            Account
+          <Link to="/users/account">
+            <button className="nav-link">Account</button>
           </Link>
           <button onClick={handleLogout} className="logout-button">
             Logout
