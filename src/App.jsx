@@ -9,6 +9,7 @@ import SingleBook from "./components/SingleBook";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Account from "./components/Account";
+import "./App.css";
 
 function App() {
   const [token, setToken] = useState(() => localStorage.getItem("token"));
@@ -29,7 +30,7 @@ function App() {
     <div className="app">
     <header>
         <h1>
-          <img id="logo-image" src={bookLogo} alt="Library Logo" />
+          <img className="logo" id="logo-image" src={bookLogo} alt="Library Logo" />
           BookBuddy
         </h1>
         <nav>

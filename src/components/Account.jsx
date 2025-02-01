@@ -37,7 +37,9 @@ const Account = ({ token }) => {
         setError(result.error);
       } else {
         setSuccess("Book returned successfully!");
-        setReservedBooks((prevBooks) => prevBooks.filter((book) => book.id !== bookId));
+        setReservedBooks((prevBooks) =>
+          prevBooks.filter((book) => book.id !== bookId)
+        );
       }
     } catch (err) {
       setError("Something went wrong. Please try again.");
@@ -89,8 +91,22 @@ const Account = ({ token }) => {
               <ul>
                 {reservedBooks.map((book) => (
                   <li key={book.id}>
-                    <h4>{book.title} by {book.author}</h4>
-                    <button onClick={() => handleReturn(book.id)}>Return</button>
+                    <h4>
+                      {book.title} by {book.author}
+                    </h4>
+                    <img
+                      src={book.coverimage || "https://via.placeholder.com/200"}
+                      alt={book.title || "Book Cover"}
+                      style={{ maxWidth: "150px", height: "auto" }}
+                    />
+                    <div>
+                      <button
+                        className="return-book-button"
+                        onClick={() => handleReturn(book.id)}
+                      >
+                        Return
+                      </button>
+                    </div>
                   </li>
                 ))}
               </ul>

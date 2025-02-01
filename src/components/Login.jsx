@@ -5,6 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import { getLogin } from "../api";
 import userIcon from "../assets/icons/icons8-person-48.png";
 import passwordIcon from "../assets/icons/icons8-lock-30.png";
+import signupImg from "../assets/icons/sign-up.png";
 
 const Login = ({ setToken }) => {
   const [formData, setFormData] = useState({ email: "", password: "" });
@@ -39,71 +40,81 @@ const Login = ({ setToken }) => {
   }
 
   return (
-    <div>
-      <h2>Login</h2>
-      {error && <p style={{ color: "red" }}>{error}</p>}
+    <div className="sign-up-container">
+      <div >
+        <h2>Login</h2>
+        {error && <p style={{ color: "red" }}>{error}</p>}
 
-      <form onSubmit={handleSubmit} className="form">
-        <div className="input-container">
-          <div className="input-with-icon">
-            <label>
-              <img src={userIcon} alt="User Icon" className="input-icon" />
-              <input
-                type="text"
-                id="email"
-                value={formData.email}
-                placeholder="Email"
-                onChange={(e) => {
-                  setFormData((prev) => ({ ...prev, email: e.target.value }));
-                }}
-                required
-              />
-            </label>
-
-            <br />
-
-            <label>
-              <img
-                src={passwordIcon}
-                alt="Lock Icon"
-                className="password-icon"
-              />
-              <input
-                type="password"
-                id="password"
-                value={formData.password}
-                placeholder="Password"
-                onChange={(e) => {
-                  setFormData((prev) => ({
-                    ...prev,
-                    password: e.target.value,
-                  }));
-                }}
-                required
-                minLength="4"
-                maxLength="8"
-              />
-            </label>
-
-            <br />
-            <br />
-
-            <button type="submit">Login</button>
+        <form onSubmit={handleSubmit}>
+          <div className="input-container">
+            <div className="input-with-icon">
+              <label>
+                <img src={userIcon} alt="User Icon" className="input-icon" />
+                <input
+                  type="text"
+                  id="email"
+                  value={formData.email}
+                  placeholder="Email"
+                  onChange={(e) => {
+                    setFormData((prev) => ({ ...prev, email: e.target.value }));
+                  }}
+                  required
+                />
+              </label>
+            </div>
           </div>
-        </div>
-      </form>
 
-      {error && error.includes("Username or password is incorrect")}
+          <div className="input-container">
+            <div className="input-with-icon">
+              <label>
+                <img
+                  src={passwordIcon}
+                  alt="Lock Icon"
+                  className="password-icon"
+                />
+                <input
+                  type="password"
+                  id="password"
+                  value={formData.password}
+                  placeholder="Password"
+                  onChange={(e) => {
+                    setFormData((prev) => ({
+                      ...prev,
+                      password: e.target.value,
+                    }));
+                  }}
+                  required
+                  minLength="4"
+                  maxLength="8"
+                />
+              </label>
+            </div>
+          </div>
 
-      {/* Show link button only if registration is successful */}
-      {token && (
-        <Link to="/users/account">
-          <button>Go to My Account</button>
-        </Link>
-      )}
+          <button className="form-button" type="submit">
+            Login
+          </button>
+        </form>
 
-      <p>Dont have an accout? <Link to="/users/register"><button>Sign-up</button></Link></p> 
-      
+        {error && error.includes("Username or password is incorrect")}
+
+        {/* Show link button only if registration is successful */}
+        {token && (
+          <Link to="/users/account">
+            <button>Go to My Account</button>
+          </Link>
+        )}
+
+        <p>
+          Dont have an accout?{" "}
+          <Link to="/users/register">
+            <button>Sign-up</button>
+          </Link>
+        </p>
+      </div>
+      <div className="form-img-container">
+        <img className="form-img" src={signupImg} alt="" />
+      </div>
     </div>
   );
 };

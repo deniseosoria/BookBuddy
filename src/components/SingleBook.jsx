@@ -86,7 +86,7 @@ const SingleBook = ({ token }) => {
       )}
 
       <br/>
-      <Link to="/"><button>Back to All Books</button></Link>
+      <Link to="/"><button className="single-book-button">Back to All Books</button></Link>
     </div>
   );
 };

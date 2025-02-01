@@ -1,8 +1,21 @@
+:root {
+  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  font-weight: 400;
+
+  font-synthesis: none;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
 body {
   font-family: Georgia, serif;
   background-color: #f8f8f8;
   margin: 0;
   padding: 0;
+  min-width: 320px;
+  min-height: 100vh;
 }
 
 #logo-image {
@@ -12,10 +25,12 @@ body {
 
 /* Add your own custom styles here */
 /* ************************************************* */
-.app{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+a {
+  font-weight: 500;
+  color: #2c2c33;
+}
+a:hover {
+  color: #646464;
 }
 
 h1{
@@ -25,6 +40,39 @@ h1{
 h2{
   text-align: center;
 }
+
+ul {
+  list-style: none;
+  padding: 0;
+}
+
+ul li {
+  margin-bottom: 10px;
+}
+
+button {
+  border: 1px solid transparent;
+  padding: 10px 20px;
+  width: 100px;
+  background-color: #363293;
+  color: white;
+  border-radius: 17px;
+  border: none;
+  cursor: pointer;
+  transition: background 0.3s;
+  cursor: pointer;
+  font-size: 1em;
+  font-weight: 500;
+}
+
+button:hover {
+  background-color: #474db9;
+}
+button:focus,
+button:focus-visible {
+  outline: 4px auto -webkit-focus-ring-color;
+}
+
 
 /* ************************************************* */
 /* Nav bar */
@@ -38,27 +86,38 @@ h2{
 .nav-link {
   text-decoration: none;
   font-size: 18px;
-  padding: 10px;
+  padding: 10px 20px;
+  border: 1px solid rgb(131, 129, 129);
+  border-radius: 13px;
+  font-weight: 800;
 }
 
+.logout-button{
+  text-decoration: none;
+  font-size: 18px;
+  padding: 10px 20px;
+  border-radius: 13px;
+  font-weight: 500;
+  font-family: Georgia, serif;
+}
+
+/* ************************************************* */
 .search-bar{
   text-align: center;
 }
 
 
-.books{
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-}
 
 
+/* ************************************************* */
+/* Sinlge Books page */
 .single-book{
   text-align: center;
   width: 40rem;
+}
+
+.single-book-button{
+  width: 190px;
 }
 
 
@@ -94,6 +153,7 @@ h2{
   background: #ddd;
   text-align: left; /* Align text inside buttons to the left */
   transition: background 0.3s;
+  border-radius: 0%;
 }
 
 .sidebar button:hover {
@@ -101,40 +161,42 @@ h2{
 }
 
 .sidebar .active {
-  background: #791879;
+  background: #363293;
   color: white;
 }
 
 .content {
   flex: 1;
+  text-align: left; /* Ensure text is left-aligned */
   padding: 20px;
 }
 
-ul {
-  list-style: none;
-  padding: 0;
+.return-book-button{
+  background-color: transparent;
+  color: #2c2c33;
+  border: 1px solid rgb(141, 139, 139);
+  border-radius: 10px;
+  padding: 5px 5px;
+  margin: 0;
+
 }
 
-ul li {
-  margin-bottom: 10px;
-}
-
-button {
-  padding: 8px 12px;
-  background: #791879;
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background 0.3s;
-}
-
-button:hover {
-  background: #972c97;
-}
 
 /* ************************************************* */
 
 /* All books */
+.books{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.available-button{
+  width: 200px;
+}
 
 .grid-container {
   display: grid;
@@ -157,7 +219,102 @@ button:hover {
   text-align: center;
   width: 100%;
   max-width: 300px; /* Ensures grid items fit */
+  text-decoration: none;
 }
+.grid-item h3 {
+  text-align: center;
+  display: block;
+  width: 100%;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  margin: 0;
+}
+
+.books-button{
+  margin-top: 20px;
+}
+
+/* ************************************************* */
+/* Login/Regist page */
+
+.sign-up-container{
+  background-color: #dad9e9;
+  border-radius: 17px;
+  padding: 60px 60px 60px 60px;
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.8);
+  display: flex;
+  font-size: 15px;
+  margin: 70px;
+}
+
+.form-img-container{
+  padding-top: 10px;
+}
+
+.form-img{
+  width: 400px;
+}
+
+.input-container {
+  margin-bottom: 20px;
+}
+
+.input-with-icon {
+  display: flex; /* Ensures input and icon are in one row */
+  align-items: center; /* Aligns them vertically */
+  position: relative;
+  max-width: 300px; /* Adjust as needed */
+  background-color: rgb(255, 255, 255);
+  border: 1px solid #ccc; /* Optional border */
+  border-radius: 13px;
+  padding: 10px;
+  height: 15px;
+  
+}
+
+/* Fix input alignment */
+.input-with-icon input {
+  flex: 1; /* Ensures input takes the remaining space */
+  border: none; /* Remove default borders */
+  outline: none; /* Remove focus outline */
+  padding: 8px 10px 8px 40px; /* Space for the icon */
+  font-size: 14px;
+  color: #7c7c7c;
+}
+
+
+.input-icon {
+  position: absolute;
+  left: 10px; /* Adjust as needed */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  pointer-events: none; /* Prevents the icon from being clickable */
+}
+
+.password-icon {
+  position: absolute;
+  left: 10px; /* Adjust as needed */
+  top: 50%;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  pointer-events: none; /* Prevents the icon from being clickable */
+}
+
+.form-button{
+  background-color: #363293;
+  color: white;
+  border-radius: 13px;
+  padding: 8px 20px;
+  width: 100px;
+  margin-bottom: 50px;
+}
+
+
+/* ************************************************* */
 
 /* Responsive grid adjustments */
 @media (max-width: 1024px) {

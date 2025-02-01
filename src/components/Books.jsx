@@ -22,7 +22,9 @@ const Books = () => {
         setFilteredBooks(booksData);
       } catch (err) {
         console.error("Error fetching books:", err);
-        setError(err.message || "Failed to load books. Please try again later.");
+        setError(
+          err.message || "Failed to load books. Please try again later."
+        );
       } finally {
         setIsLoading(false);
       }
@@ -68,27 +70,28 @@ const Books = () => {
         {/* Book List */}
         {filteredBooks.length > 0 ? (
           filteredBooks.map((book) => (
-            <div className="grid-item" key={book.id}>
-              <h3>{book.title || "Unknown Title"}</h3>
-              <h4>Author: {book.author || "Unknown Author"}</h4>
-              <h3 style={{ color: book.available ? "blue" : "red" }}>
-                {book.available ? "Available" : "Not Available"}
-              </h3>
+            <Link
+              className="grid-item"
+              key={book.id}
+              to={`/book/${book.id}`}
+              onClick={() => console.log(`Navigating to book ID: ${book.id}`)}
+            >
+              <div>
+                <h3>{book.title || "Unknown Title"}</h3>
+                <h4>Author: {book.author || "Unknown Author"}</h4>
+                <h3 style={{ color: book.available ? "blue" : "red" }}>
+                  {book.available ? "Available" : "Not Available"}
+                </h3>
 
-              <img
-                src={book.coverimage || "https://via.placeholder.com/200"}
-                alt={book.title || "Book Cover"}
-                style={{ maxWidth: "150px", height: "auto" }}
-              />
+                <img
+                  src={book.coverimage || "https://via.placeholder.com/200"}
+                  alt={book.title || "Book Cover"}
+                  style={{ maxWidth: "150px", height: "auto" }}
+                />
 
-              <br />
-              <Link
-                to={`/book/${book.id}`}
-                onClick={() => console.log(`Navigating to book ID: ${book.id}`)}
-              >
-                More Details
-              </Link>
-            </div>
+                <div className="books-button"></div>
+              </div>
+            </Link>
           ))
         ) : (
           <p>No books available.</p>
