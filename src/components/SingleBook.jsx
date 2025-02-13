@@ -70,9 +70,10 @@ const SingleBook = ({ token }) => {
         {book.available ? "Available" : "Not Available"}
       </h3>
       <img
-        src={book.coverimage || "https://via.placeholder.com/200"}
+        src={book.coverimage}
+        onError={(e) => e.currentTarget.src = "https://placehold.co/150x220/zzz/000?text=NoBookCover"}
         alt={book.title || "Book Cover"}
-        style={{ maxWidth: "200px", height: "auto" }}
+        style={{ maxWidth: "300px", height: "auto" }}
       />
       <p>{book.description || "No description available."}</p>
 

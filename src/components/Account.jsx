@@ -75,7 +75,7 @@ const Account = ({ token }) => {
         {success && <p style={{ color: "green" }}>{success}</p>}
 
         {activeTab === "accountInfo" && (
-          <div>
+          <div className="accountInfo">
             <h2>Welcome, {user.firstname || "User"}!</h2>
             <h3>User ID: {user.id || "Unknown ID"}</h3>
             <h3>First Name: {user.firstname || "Unknown"}</h3>
@@ -85,10 +85,10 @@ const Account = ({ token }) => {
         )}
 
         {activeTab === "reservedBooks" && (
-          <div>
+          <div className="reservedBooks">
             <h3>Your Reserved Books:</h3>
             {reservedBooks.length > 0 ? (
-              <ul className="reserved-books">
+              <ul className="reserved-books-list">
                 {reservedBooks.map((book) => (
                   <li key={book.id}>
                     <h4>

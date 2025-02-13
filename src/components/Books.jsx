@@ -84,7 +84,8 @@ const Books = () => {
                 </h3>
 
                 <img
-                  src={book.coverimage || "https://via.placeholder.com/200"}
+                  src={book.coverimage}
+                  onError={(e) => e.currentTarget.src = "https://placehold.co/150x220/zzz/000?text=NoBookCover"}
                   alt={book.title || "Book Cover"}
                   style={{ maxWidth: "150px", height: "auto" }}
                 />

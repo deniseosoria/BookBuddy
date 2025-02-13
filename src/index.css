@@ -70,11 +70,6 @@ button {
 button:hover {
   background-color: #474db9;
 }
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
-}
-
 
 /* ************************************************* */
 /* Nav bar */
@@ -142,7 +137,7 @@ button:focus-visible {
   flex-direction: column;
   align-items: flex-start;
   border-right: 2px solid #ddd;
-  margin: 60px 200px 0 0;
+  margin-top: 60px;
 }
 
 .sidebar h3 {
@@ -158,26 +153,33 @@ button:focus-visible {
   margin: 5px 0;
   border: none;
   cursor: pointer;
-  background: #ddd;
   text-align: left; /* Align text inside buttons to the left */
   transition: background 0.3s;
   border-radius: 0%;
 }
 
 .sidebar button:hover {
-  background: #bbb;
+  text-decoration: underline;
+  background-color: #f4f4f4;;
 }
 
 .sidebar .active {
-  background: #363293;
-  color: white;
+  border-left: 1px solid #000000 !important;
 }
 
 .content {
   flex: 1;
   text-align: left; /* Ensure text is left-aligned */
-  padding: 20px;
-  margin:60px 0 0 100px;
+  width: 600px;
+  }
+
+.accountInfo{
+  padding: 40px;
+}
+
+.reservedBooks{
+  padding: 40px;
+
 }
 
 .content h3{
@@ -188,7 +190,7 @@ button:focus-visible {
   font-size: 19px;
 }
 
-.reserved-books{
+.reserved-books-list{
   margin-top: 60px;
 }
 

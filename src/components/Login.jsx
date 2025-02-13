@@ -28,8 +28,8 @@ const Login = ({ setToken }) => {
         setToken(loginData.token); // Update App.js state
         setLocalToken(loginData.token); // Store locally for the Link button
         localStorage.setItem("token", loginData.token); // Persist login
-        navigate("/users/account"); // Auto-redirect to Account page
-        window.location.reload(); // Refresh page to update navigation
+        //navigate("/users/account"); // Auto-redirect to Account page
+        window.location.href = "/"; // Redirect to homepage
       } else {
         throw new Error("Account not found. Please register.");
       }
@@ -90,20 +90,13 @@ const Login = ({ setToken }) => {
               </label>
             </div>
           </div>
-
+          
           <button className="form-button" type="submit">
             Login
           </button>
         </form>
 
         {error && error.includes("Username or password is incorrect")}
-
-        {/* Show link button only if registration is successful */}
-        {token && (
-          <Link to="/users/account">
-            <button>Go to My Account</button>
-          </Link>
-        )}
 
         <p>
           Dont have an accout?{" "}
