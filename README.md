@@ -21,6 +21,13 @@ BookBuddy is a web-based application designed to simulate a library management s
 - **/register:** Allows users to create an account.
 - **/account:** Displays user-specific account information, including the username/email and a list of checked-out books.
 
+## Requirements
+
+### Project Management
+
+- GitHub Project with detailed planning tickets and task descriptions.
+- GitHub repository containing all relevant code and commits.
+
 ### Functionality
 
 - **Unauthenticated Users:**
@@ -43,6 +50,11 @@ BookBuddy is a web-based application designed to simulate a library management s
 - Functions (declaration and invocation) to handle business logic.
 - Use of complex data types (arrays and objects) to store and manipulate data.
 
+#### Fetch Basics
+- Proper use of HTTP methods (`GET`, `POST`, `PATCH`, `DELETE`) for interacting with an API.
+- Handling asynchronous requests with `async/await` and `try/catch` blocks.
+- Updating the DOM based on asynchronous data.
+
 #### Front-End Basics
 - Functional React components for rendering UI.
 - Proper use of props to share data and functions between components.
@@ -54,6 +66,19 @@ BookBuddy is a web-based application designed to simulate a library management s
 - Layouts using Flexbox/Grid for responsive design.
 - Avoiding CSS conflicts by adhering to cascading and specificity rules.
 - A clean and intuitive user interface (UI) for a seamless user experience (UX).
+
+#### Code Quality
+- Code is clean, well-organized, and free from unused variables or functions.
+- Variable, function, and class names are expressive and meaningful.
+- No `console.log()` statements in the final version.
+
+## Tools & Technologies
+
+- **React**
+- **JavaScript**
+- **CSS**
+- **HTML**
+- **APIs**
 
 ## Setup Instructions
 
