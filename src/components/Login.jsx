@@ -34,7 +34,6 @@ const Login = ({ setToken }) => {
         throw new Error("Account not found. Please register.");
       }
     } catch (err) {
-      console.error("Login failed:", err);
       setError(err.message);
     }
   }

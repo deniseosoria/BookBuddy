@@ -37,7 +37,6 @@ const Register = ({ setToken }) => {
         throw new Error("Registration failed. Please try again.");
       }
     } catch (err) {
-      console.error("Signup failed:", err);
       setError(err.message);
     }
   }

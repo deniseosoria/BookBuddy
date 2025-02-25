@@ -21,7 +21,6 @@ const Books = () => {
         setBooks(booksData);
         setFilteredBooks(booksData);
       } catch (err) {
-        console.error("Error fetching books:", err);
         setError(
           err.message || "Failed to load books. Please try again later."
         );
@@ -74,7 +73,6 @@ const Books = () => {
               className="grid-item"
               key={book.id}
               to={`/book/${book.id}`}
-              onClick={() => console.log(`Navigating to book ID: ${book.id}`)}
             >
               <div>
                 <h3>{book.title || "Unknown Title"}</h3>

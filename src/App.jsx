@@ -1,8 +1,6 @@
 import React, { useState } from "react";
 import { Routes, Route, Link } from "react-router-dom";
 import bookLogo from "./assets/books.png";
-import SearchBar from "./components/SearchBar";
-import SearchedBooks from "./components/SearchedBooks";
 import Navigation from "./components/Navigations";
 import Books from "./components/Books";
 import SingleBook from "./components/SingleBook";
@@ -46,12 +44,10 @@ function App() {
             path="/"
             element={
               <>
-                <SearchBar />
                 <Books />
               </>
             }
           />
-          <Route path="/book/search/:name" element={<SearchedBooks />} />
           <Route path="/book/:id" element={<SingleBook token={token}/>} />
           <Route path="/users/login" element={<Login setToken={handleSetToken} token={token} />} />
           <Route path="/users/register" element={<Register setToken={handleSetToken} token={token} />} />
