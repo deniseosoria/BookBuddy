@@ -15,10 +15,8 @@ const SingleBook = ({ token }) => {
       try {
         const bookData = await getSingleBook(id);
         setBook(bookData);
-
       } catch (err) {
         setError(err.message || "Failed to load book data.");
-
       } finally {
         setIsLoading(false);
       }
@@ -28,7 +26,6 @@ const SingleBook = ({ token }) => {
   }, [id]);
 
   async function handleReserve() {
-
     try {
       const result = await reserveBook(token, book.id);
       if (result.error) {
@@ -71,23 +68,42 @@ const SingleBook = ({ token }) => {
       </h3>
       <img
         src={book.coverimage}
-        onError={(e) => e.currentTarget.src = "https://placehold.co/150x220/zzz/000?text=NoBookCover"}
+        onError={(e) =>
+          (e.currentTarget.src =
+            "https://placehold.co/150x220/zzz/000?text=NoBookCover")
+        }
         alt={book.title || "Book Cover"}
         style={{ maxWidth: "300px", height: "auto" }}
       />
       <p>{book.description || "No description available."}</p>
 
       {/* Success/Error Messages */}
-      {error && <p style={{ color: "red" }} aria-live="polite">{error}</p>}
-      {success && <p style={{ color: "green" }} aria-live="polite">{success}</p>}
+      {error && (
+        <p style={{ color: "red" }} aria-live="polite">
+          {error}
+        </p>
+      )}
+      {success && (
+        <p style={{ color: "green" }} aria-live="polite">
+          {success}
+        </p>
+      )}
+
+      {!token && (
+        <p>
+          <Link to="/users/login">Log in</Link> to reserve this book.
+        </p>
+      )}
 
       {/* Conditionally render the Reserve button */}
       {token && book.available && (
         <button onClick={handleReserve}>Reserve</button>
       )}
 
-      <br/>
-      <Link to="/"><button className="single-book-button">Back to All Books</button></Link>
+      <br />
+      <Link to="/">
+        <button className="single-book-button">Back to All Books</button>
+      </Link>
     </div>
   );
 };

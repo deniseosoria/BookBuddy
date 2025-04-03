@@ -1,183 +1,189 @@
-const API_URL = `https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/books`;
+const BASE_URL = "https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api";
 
+const jsonHeaders = {
+  "Content-Type": "application/json",
+};
+
+// GET all books
 export async function getBooks() {
+  console.log("✅ fetchBooksFromAPI called");
   try {
-    const response = await fetch(API_URL);
+    const response = await fetch("https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/books");
     const result = await response.json();
-    return result.books;
+    console.log("🧪 Full result object:", result);
 
+    return result;
   } catch (err) {
-    return []; // Return an empty array on error
+    console.error("fetchBooksFromAPI error:", err);
+    return [];
   }
 }
 
+
+
+// GET single book by ID
 export async function getSingleBook(id) {
-  if (!id) {
+  console.log("getSingleBook called with id:", id);
+  if (!id) return null;
+
+  try {
+    const response = await fetch(`${BASE_URL}/books/${id}`);
+    const result = await response.json();
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to fetch book");
+    }
+    console.log("getSingleBook result:", result);
+    return result;
+  } catch (err) {
+    console.error("getSingleBook error:", err);
     return null;
   }
-
-  try {
-    const response = await fetch(`${API_URL}/${id}`);
-    if (!response.ok) {
-      throw new Error(
-        `Error fetching book with ID ${id}: ${response.statusText}`
-      );
-    }
-
-    const result = await response.json();
-    return result.book;
-
-  } catch (err) {
-    return null; // Return null on error
-  }
 }
 
-export async function getLogin(formData) {
+// POST login
+export async function getLogin({ email, password }) {
+  console.log("getLogin called with:", { email });
   try {
-    const response = await fetch(
-      "https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/users/login",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          email: formData.email,
-          password: formData.password,
-        }),
-      }
-    );
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      if (result.name === "IncorrectCredentialsErrorr") {
-        throw new Error("Username or password is incorrect");
-      }
-      throw new Error(result.message || "Login failed.");
-    }
-
-    return result; // Expected { token, message }
-  } catch (err) {
-    return { error: err.message }; // Ensure the frontend receives an error
-  }
-}
-
-export async function getRegister(formData) {
-  try {
-    const response = await fetch(
-      "https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/users/register",
-      {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          firstname: formData.firstname,
-          lastname: formData.lastname,
-          email: formData.email,
-          password: formData.password,
-        }),
-      }
-    );
-
-    const result = await response.json();
-
-    if (!response.ok) {
-      if (result.name === "UserExistsError") {
-        throw new Error("Account already exists. Please log in.");
-      }
-      throw new Error(result.message || "Registration failed.");
-    }
-
-    return result; // Expected { token, message }
-  } catch (err) {
-    return { error: err.message }; // Ensure the frontend receives an error
-  }
-}
-
-export async function getAuthentication(token) {
-  try {
-    const response = await fetch(
-      `https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/users/me`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    if (!response.ok) {
-      throw new Error(`Authentication failed: ${response.statusText}`);
-    }
-
-    const result = await response.json();
-
-    return result;
-  } catch (err) {
-    return { error: err.message };
-  }
-}
-
-export async function getReservedBooks(token) {
-  try {
-    const response = await fetch(
-      `https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/reservations`,
-      {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-      }
-    );
-
-    const result = await response.json();
-    return result.reservation;
-  } catch (err) {
-    return []; // Return an empty array on error
-  }
-}
-
-export async function reserveBook(token, bookId) {
-  try {
-    const response = await fetch(`https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/books/${bookId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Pass the token for authentication
-      },
-      body: JSON.stringify({available: false }), //the desired new available status for the book
+    const response = await fetch(`${BASE_URL}/users/login`, {
+      method: "POST",
+      headers: jsonHeaders,
+      body: JSON.stringify({ email, password }),
     });
 
     const result = await response.json();
+    console.log("getLogin result:", result);
 
     if (!response.ok) {
-      throw new Error(result.error || "Failed to reserve book.");
+      throw new Error(result.message || "Login failed");
     }
-    return result;
+
+    return result; // { token, message }
   } catch (err) {
+    console.error("getLogin error:", err);
     return { error: err.message };
   }
 }
 
-export async function returnBook(token, bookId) {
+// POST register
+export async function getRegister({ firstname, lastname, email, password }) {
+  console.log("getRegister called with:", { firstname, lastname, email });
   try {
-    const response = await fetch(`https://fsa-book-buddy-b6e748d1380d.herokuapp.com/api/reservations/${bookId}`, {
+    const response = await fetch(`${BASE_URL}/users/register`, {
+      method: "POST",
+      headers: jsonHeaders,
+      body: JSON.stringify({ firstname, lastname, email, password }),
+    });
+
+    const result = await response.json();
+    console.log("getRegister result:", result);
+
+    if (!response.ok) {
+      throw new Error(result.message || "Registration failed");
+    }
+
+    return result;
+  } catch (err) {
+    console.error("getRegister error:", err);
+    return { error: err.message };
+  }
+}
+
+// GET authenticated user info
+export async function getAuthentication(token) {
+  console.log("getAuthentication called");
+  try {
+    const response = await fetch(`${BASE_URL}/users/me`, {
+      method: "GET",
+      headers: {
+        ...jsonHeaders,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await response.json();
+    console.log("getAuthentication result:", result);
+
+    if (!response.ok) {
+      throw new Error(result.message || "Authentication failed");
+    }
+
+    return result;
+  } catch (err) {
+    console.error("getAuthentication error:", err);
+    return { error: err.message };
+  }
+}
+
+// GET reserved books
+export async function getReservedBooks(token) {
+  console.log("getReservedBooks called");
+  try {
+    const response = await fetch(`${BASE_URL}/reservations`, {
+      method: "GET",
+      headers: {
+        ...jsonHeaders,
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    const result = await response.json();
+    console.log("getReservedBooks result:", result);
+    return result;
+  } catch (err) {
+    console.error("getReservedBooks error:", err);
+    return [];
+  }
+}
+
+// POST reserve a book
+export async function reserveBook(token, bookId) {
+  console.log("reserveBook called with bookId:", bookId);
+  try {
+    const response = await fetch(`${BASE_URL}/reservations`, {
+      method: "POST",
+      headers: {
+        ...jsonHeaders,
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify({ bookId }),
+    });
+
+    const result = await response.json();
+    console.log("reserveBook result:", result);
+
+    if (!response.ok) {
+      throw new Error(result.message || "Failed to reserve book.");
+    }
+
+    return result;
+  } catch (err) {
+    console.error("reserveBook error:", err);
+    return { error: err.message };
+  }
+}
+
+// DELETE return a book (by reservationId)
+export async function returnBook(token, reservationId) {
+  console.log("returnBook called with reservationId:", reservationId);
+  try {
+    const response = await fetch(`${BASE_URL}/reservations/${reservationId}`, {
       method: "DELETE",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`, // Pass the token for authentication
+        ...jsonHeaders,
+        Authorization: `Bearer ${token}`,
       },
-      body: JSON.stringify({available: true }), //the desired new available status for the book
     });
 
     const result = await response.json();
+    console.log("returnBook result:", result);
 
     if (!response.ok) {
-      throw new Error(result.error || "Failed to return book.");
+      throw new Error(result.message || "Failed to return book.");
     }
 
     return result;
   } catch (err) {
+    console.error("returnBook error:", err);
     return { error: err.message };
   }
 }

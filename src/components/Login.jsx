@@ -28,7 +28,6 @@ const Login = ({ setToken }) => {
         setToken(loginData.token); // Update App.js state
         setLocalToken(loginData.token); // Store locally for the Link button
         localStorage.setItem("token", loginData.token); // Persist login
-        //navigate("/users/account"); // Auto-redirect to Account page
         window.location.href = "/"; // Redirect to homepage
       } else {
         throw new Error("Account not found. Please register.");

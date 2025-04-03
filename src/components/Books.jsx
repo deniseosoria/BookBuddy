@@ -68,7 +68,8 @@ const Books = () => {
       <div className="grid-container">
         {/* Book List */}
         {filteredBooks.length > 0 ? (
-          filteredBooks.map((book) => (
+          filteredBooks.map((book) => 
+           book ? (
             <Link
               className="grid-item"
               key={book.id}
@@ -91,7 +92,8 @@ const Books = () => {
                 <div className="books-button"></div>
               </div>
             </Link>
-          ))
+          ) : null
+        )
         ) : (
           <p>No books available.</p>
         )}
@@ -101,3 +103,44 @@ const Books = () => {
 };
 
 export default Books;
+
+// import React, { useEffect, useState } from "react";
+// import { fetchBooksFromAPI } from "../api";
+
+// const Books = () => {
+//   const [books, setBooks] = useState([]);
+
+//   useEffect(() => {
+//     const fetchBooks = async () => {
+//       console.log("📘 fetchBooksFromAPI function:", fetchBooksFromAPI);
+//       const booksArray = await fetchBooksFromAPI();
+//       console.log("📘 Books from API:", booksArray);
+
+//       if (Array.isArray(booksArray)) {
+//         setBooks(booksArray);
+//       } else {
+//         console.error("❌ getBooks did not return an array");
+//       }
+//     };
+
+//     fetchBooks();
+//   }, []);
+
+//   return (
+//     <div>
+//       <h2>Books</h2>
+//       {books.length > 0 ? (
+//         books.map((book) => (
+//           <div key={book.id}>
+//             <h3>{book.title}</h3>
+//             <p>{book.author}</p>
+//           </div>
+//         ))
+//       ) : (
+//         <p>No books found.</p>
+//       )}
+//     </div>
+//   );
+// };
+
+// export default Books;

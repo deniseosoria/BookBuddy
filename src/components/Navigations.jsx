@@ -13,6 +13,9 @@ const Navigations = () => {
       getAuthentication(token).then((data) => {
         if (!data.error) {
           setUser(data); // Set authenticated user data
+        } else {
+          console.warn("Authentication failed:", user.error);
+          localStorage.removeItem("token"); 
         }
       });
     }
@@ -29,7 +32,9 @@ const Navigations = () => {
     <div className="nav">
       {/* Show "Home" link ONLY if the user is NOT on "/" */}
       {location.pathname !== "/" && (
-        <Link to="/"><button className="nav-link">Home</button></Link>
+        <Link to="/">
+          <button className="nav-link">Home</button>
+        </Link>
       )}
 
       {!user ? (
