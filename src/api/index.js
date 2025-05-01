@@ -174,16 +174,21 @@ export async function returnBook(token, reservationId) {
       },
     });
 
-    const result = await response.json();
-    console.log("returnBook result:", result);
-
-    if (!response.ok) {
-      throw new Error(result.message || "Failed to return book.");
+    let result = null;
+    if (response.status !== 204) {
+      result = await response.json();
     }
 
+    if (!response.ok) {
+      throw new Error(result?.message || "Failed to return book.");
+    }
+
+    console.log("returnBook result:", result);
     return result;
   } catch (err) {
     console.error("returnBook error:", err);
     return { error: err.message };
   }
 }
+
+
