@@ -30,15 +30,15 @@ const Account = ({ token }) => {
   }, [token]);
 
   // Handle book return
-  async function handleReturn(bookId) {
+  async function handleReturn(reservationId) {
     try {
-      const result = await returnBook(token, bookId);
-      if (result.error) {
+      const result = await returnBook(token, reservationId);
+      if (result?.error) {
         setError(result.error);
       } else {
         setSuccess("Book returned successfully!");
         setReservedBooks((prevBooks) =>
-          prevBooks.filter((book) => book.id !== bookId)
+          prevBooks.filter((book) => book.id !== reservationId)
         );
       }
     } catch (err) {
@@ -46,9 +46,6 @@ const Account = ({ token }) => {
     }
   }
 
-  if (!user) {
-    return <p>Loading account details...</p>;
-  }
 
   return (
     <div className="account-container">
@@ -89,26 +86,25 @@ const Account = ({ token }) => {
             <h3>Your Reserved Books:</h3>
             {reservedBooks.length > 0 ? (
               <ul className="reserved-books-list">
-                {reservedBooks.map((book) => (
-                  <li key={book.id}>
-                    <h4>
-                      {book.title} by {book.author}
-                    </h4>
+                {reservedBooks.map((reservation) => (
+                  <li key={reservation.id}>
+                    <h4>{reservation.title} by {reservation.author}</h4>
                     <img
-                      src={book.coverimage || "https://via.placeholder.com/200"}
-                      alt={book.title || "Book Cover"}
+                      src={reservation.coverimage || "https://via.placeholder.com/200"}
+                      alt={reservation.title}
                       style={{ maxWidth: "150px", height: "auto" }}
                     />
                     <div>
                       <button
                         className="return-book-button"
-                        onClick={() => handleReturn(book.id)}
+                        onClick={() => handleReturn(reservation.id)} // reservation.id = reservationId
                       >
                         Return
                       </button>
                     </div>
                   </li>
                 ))}
+
               </ul>
             ) : (
               <p>You have not reserved any books yet.</p>
