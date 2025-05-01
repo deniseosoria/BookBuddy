@@ -11,6 +11,12 @@ const SingleBook = ({ token }) => {
   const [success, setSuccess] = useState(null);
 
   useEffect(() => {
+    if (!Number(id)) {
+      setError("Invalid book ID.");
+      setIsLoading(false);
+      return;
+    }
+
     async function fetchBook() {
       try {
         const bookData = await getSingleBook(id);

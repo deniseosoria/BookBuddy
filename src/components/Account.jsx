@@ -1,14 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { getAuthentication, getReservedBooks, returnBook } from "../api";
+import { Link } from "react-router-dom";
 
 const Account = ({ token }) => {
   const [user, setUser] = useState(null);
   const [reservedBooks, setReservedBooks] = useState([]);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [activeTab, setActiveTab] = useState("accountInfo"); // Controls which section to show
+  const [activeTab, setActiveTab] = useState("accountInfo");
 
-  // Handle missing token early
   if (!token) {
     return <p>Please log in or create an account.</p>;
   }
@@ -29,7 +29,6 @@ const Account = ({ token }) => {
     fetchUserData();
   }, [token]);
 
-  // Handle book return
   async function handleReturn(reservationId) {
     try {
       const result = await returnBook(token, reservationId);
@@ -46,10 +45,12 @@ const Account = ({ token }) => {
     }
   }
 
+  if (!user) {
+    return <p>Loading account details...</p>;
+  }
 
   return (
     <div className="account-container">
-      {/* Sidebar */}
       <div className="sidebar">
         <h3>Account</h3>
         <button
@@ -66,7 +67,6 @@ const Account = ({ token }) => {
         </button>
       </div>
 
-      {/* Main Content */}
       <div className="content">
         {error && <p style={{ color: "red" }}>{error}</p>}
         {success && <p style={{ color: "green" }}>{success}</p>}
@@ -86,25 +86,27 @@ const Account = ({ token }) => {
             <h3>Your Reserved Books:</h3>
             {reservedBooks.length > 0 ? (
               <ul className="reserved-books-list">
-                {reservedBooks.map((reservation) => (
-                  <li key={reservation.id}>
-                    <h4>{reservation.title} by {reservation.author}</h4>
+                {reservedBooks.map((book) => (
+                  <li key={book.id}>
+                    <h4>{book.title} by {book.author}</h4>
                     <img
-                      src={reservation.coverimage || "https://via.placeholder.com/200"}
-                      alt={reservation.title}
+                      src={book.coverimage || "https://via.placeholder.com/200"}
+                      alt={book.title || "Book Cover"}
                       style={{ maxWidth: "150px", height: "auto" }}
                     />
                     <div>
+                      <Link to={`/book/${book.bookid}`}>
+                        <button>View Book</button>
+                      </Link>
                       <button
                         className="return-book-button"
-                        onClick={() => handleReturn(reservation.id)} // reservation.id = reservationId
+                        onClick={() => handleReturn(book.id)}
                       >
                         Return
                       </button>
                     </div>
                   </li>
                 ))}
-
               </ul>
             ) : (
               <p>You have not reserved any books yet.</p>
